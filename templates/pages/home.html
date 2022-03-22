@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Главная
+{% endblock %}
+{% block content %}
+    <div class="site-wrapper-reveal">
+
+            <div class="hero-box-area mt-md-0 mt-lg-3">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 ps-0 ps-lg-3 pe-0 pe-lg-3">
+
+                            <!-- Hero Slider Area Start -->
+                            <div class="hero-area hero-slider-one">
+                                {% for slide in slides %}
+                                <div class="single-hero-slider-one bg-img"  data-bg="{{ slide.background.url }}">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="hero-text-one">
+                                                    <h1 class="hero-title">
+                                                        {{ slide.title|safe }}
+                                                    </h1>
+                                                    <p class="mt-30">{{slide.description|safe}}
+                                                    </p>
+                                                    {% if slide.link.url %}
+                                                    <div class="button-box mt-30">
+                                                        <a href="{{ slide.link.url }}" class="hero-btn-one btn">Купить <i class="icon-arrow-right"></i></a>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <!-- Hero Slider Area End -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for featured_product in products|slice:'3' %}
+                <div class="featuted-product-wrap section-space--pt_120">
+                <div class="container">
+                    <div class="row align-items-center featuted-product-one">
+                        <div class="col-lg-6 col-md-6 {% cycle 'order-md-1' 'order-md-2' %} order-1">
+                            <div class="product-thumbnail">
+                                <a href="{{ featured_product.get_absolute_url }}">
+                                    <img src="{% if featured_product.image %}{{ featured_product.image.url }}{% else %}{% static 'no-image.png' %}{% endif %}" class="img-fluid" alt="Featured Image" height="451" width="397">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 {% cycle 'order-md-2' 'order-md-1' %} order-2">
+                            <div class="featured-product-contect">
+                                <h6 class="sub-heading mb-2">FEATURED PRODUCT</h6>
+                                <h2 class="section-title--one"><a href="{{ featured_product.get_absolute_url }}">{{ featured_product.name|safe}}</a></h2>
+                                <p class="mt-30">{{ featured_product.description|safe}}</p>
+                                <div class="button-box section-space--mt_60">
+                                    <a href="{{ featured_product.get_absolute_url }}" class="btn btn--md btn--border_1">Подробнее...  <i class="icon-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="product-wrapper section-space--ptb_120">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section-title text-center mb-20">
+                                <h2 class="section-title--one section-title--center">Лучшие товары</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-slider-active">
+
+                        {% for product in products %}
+
+                        <!-- Single Product Item Start -->
+                            <div class="single-product-item text-center">
+                            <div class="products-images">
+                                <a href="{{ product.get_absolute_url }}" class="product-thumbnail">
+                                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'no-image.png' %}{% endif %}" class="img-fluid" alt="Product Images" width="300" height="300" width="300" height="300">
+
+                                    {% if product.hots %}
+                                        <span class="ribbon out-of-stock">
+                                            HOTS
+                                        </span>
+                                    {% elif product.sale %}
+                                        <span class="ribbon onsale">
+                                            SALE
+                                        </span>
+                                    {% endif %}
+                                </a>
+                                <div class="product-actions">
+                                    <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <p style="display: none">{{ cart_product_form }}</p>
+                                        <button style="border: none;"><i class="p-icon icon-bag2"></i> <span class="tool-tip">Add to cart</span></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h6 class="prodect-title"><a href="#">{{ product.name }}</a></h6>
+                                <div class="prodect-price">
+{#                                    <span class="new-price">£40.00</span> - <span class="old-price"> £635.00</span>#}
+                                    <span class="old-price"> {{product.price}} руб.</span>
+                                </div>
+                            </div>
+                        </div><!-- Single Product Item End -->
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="offer-colection-area container-fluid">
+                <div class="section-space--ptb_120 bg-img" data-bg="{% static 'assets/images/bg/h1-countdown.webp' %}">
+                    <div class="row">
+                        <div class="container">
+                            <div class="row ps-md-1 ps-3 pe-md-1 pe-3">
+                                <div class="col-lg-7 col-md-7">
+                                    <div class="colection-info-wrap">
+                                        <div class="section-title mb-30">
+                                            <h2 class="section-title--one ">Deco Collection <span class="text-red">50% OFF</span></h2>
+                                        </div>
+
+                                        <p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced for those. Sections 1.10.32 and 1.10.33 from “de Finibus Bonorum et Malorum</p>
+
+                                        <div class="timer text-center section-space--mt_60">
+                                            <!-- countdown start -->
+                                            <div class="countdown-deals counter-style--one" data-countdown="2022/12/01"></div>
+                                            <!-- countdown end -->
+                                        </div>
+
+                                        <div class="button-box section-space--mt_60">
+                                            <a href="shop-4-column.html" class="btn--md btn--black btn">Shop now <i class="icon-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+{% endblock %}
+
