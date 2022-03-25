@@ -1,8 +1,12 @@
+import os
 from pathlib import Path
+
+from django.core.management.utils import get_random_secret_key
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-zrynk-ev4vcf$k3mto_3h1^32&nf9+^z-7aom48wo(xw(=16#*'
+SECRET_KEY = get_random_secret_key()
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
@@ -100,10 +104,10 @@ CART_SESSION_ID = 'cart'
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
 
-EMAIL_HOST = 'SMTP_HOST'
-EMAIL_PORT = 'SMTP_PORT'
-EMAIL_HOST_USER = 'SMTP_USER'
-EMAIL_HOST_PASSWORD = 'SMTP_PASSWORD'
+EMAIL_HOST = os.environ.get("SMTP_HOST", "SMTP_HOST")
+EMAIL_PORT = os.environ.get("SMTP_PORT", "SMTP_PORT")
+EMAIL_HOST_USER = os.environ.get("SMTP_HOST_USER", "SMTP_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("SMTP_PASSWORD", "SMTP_PASSWORD")
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
